@@ -1,5 +1,40 @@
+import os.path
 from tkinter import filedialog as fd
 import tkinter as tk
+import backend
+
+
+def set_error(msg):
+    error_tx.config(state=tk.NORMAL)
+    error_tx.delete("1.0", tk.END)
+    error_tx.insert("1.0", msg)
+    error_tx.config(state=tk.DISABLED)
+
+
+def press_run():
+    # Get paths
+    py_p = py_path_en.get()
+    in_p = in_path_en.get()
+    ex_out_p = ex_out_path_en.get()
+    py_out_p = py_out_path_en.get()
+
+    # Check Input
+    if not os.path.isdir(py_p):
+        set_error(f"{py_p} is not an existing directory")
+        return
+    if not os.path.isdir(in_p):
+        set_error(f"{in_p} is not an existing directory")
+        return
+    if not os.path.isdir(ex_out_p):
+        set_error(f"{ex_out_p} is not an existing directory")
+        return
+    if not os.path.isdir(py_out_p):
+        set_error(f"{py_out_p} is not an existing directory")
+        return
+
+    res = backend.run(py_p, in_p, ex_out_p, py_out_p)
+    set_error(res)
+
 
 # Initialize window
 ###################
@@ -30,10 +65,10 @@ py_out_path_en = tk.Entry(master=py_out_path_fr, width=58)
 # py_out_path_bn = tk.Button(master=py_out_path_fr, text="Select Path")
 
 execute_fr = tk.Frame(master=window, relief=tk.RAISED, borderwidth=1)
-execute_bn = tk.Button(master=execute_fr, text="Run!", width=12)
+execute_bn = tk.Button(master=execute_fr, text="Run!", width=12, command=press_run)
 
 error_fr = tk.Frame(master=window, relief=tk.RAISED, borderwidth=1)
-error_tx = tk.Text(master=error_fr, state=tk.DISABLED, fg="red", width=61)
+error_tx = tk.Text(master=error_fr, state=tk.DISABLED, fg="red", width=61, height=5)
 
 # Place components
 ##################
@@ -62,6 +97,13 @@ execute_bn.pack(side=tk.RIGHT)
 
 error_fr.grid(row=5, column=0, sticky="ew")
 error_tx.pack()
+
+# Insert Default Values
+#######################
+py_path_en.insert(0, "exercise files")
+in_path_en.insert(0, r"tests\input")
+ex_out_path_en.insert(0, r"tests\output")
+py_out_path_en.insert(0, "my_output")
 
 # Run
 #####

@@ -5,10 +5,10 @@ import time
 import os
 
 
-def run(py_p, in_p, ex_out_p, py_out_p, DEBUG=False):
-    exs = glob.glob(fr"{py_p}\*.py")
+def run(py_p, in_p, ex_out_p, py_out_p, debug=False):
+    exs = glob.glob(os.path.join(py_p, "*.py"))
     exs_names = [os.path.splitext(os.path.basename(x))[0] for x in exs]
-    test_globs = [fr"{in_p}\{x}*.txt" for x in exs_names]
+    test_globs = [os.path.join(in_p, f"{x}*.txt") for x in exs_names]
     test_files = [glob.glob(x) for x in test_globs]
 
     # tab = PrettyTable()
@@ -16,27 +16,27 @@ def run(py_p, in_p, ex_out_p, py_out_p, DEBUG=False):
     run_res = []
 
     for i, p_ex in enumerate(exs):
-        if DEBUG:
+        if debug:
             print(p_ex)
         namex = os.path.basename(p_ex)
         for pi in test_files[i]:
-            if DEBUG:
+            if debug:
                 print(f"-- {pi}")
             namei = os.path.basename(pi)
             nameo = namei.replace("in", "out")
             po = fr"{py_out_p}\{nameo}"
             po_exp = fr"{ex_out_p}\{nameo}"
             runtime = 0
-            if DEBUG:
+            if debug:
                 print("--> running")
             try:
                 start = time.time()
                 subprocess.check_output(f"python \"{p_ex}\" < {pi} > {po}", shell=True)
                 runtime = time.time() - start
-                if DEBUG:
+                if debug:
                     print(f"--> done. {runtime}")
             except subprocess.CalledProcessError:
-                if DEBUG:
+                if debug:
                     print("--> fail.")
                 cmpres = 2
             else:
