@@ -1,7 +1,8 @@
-import os.path
 from tkinter import filedialog as fd
 import tkinter as tk
+import os.path
 import backend
+import fe_res
 
 
 def set_error(msg):
@@ -33,7 +34,7 @@ def press_run():
         return
 
     res = backend.run(py_p, in_p, ex_out_p, py_out_p)
-    set_error(res)
+    fe_res.pop(res)
 
 
 # Initialize window

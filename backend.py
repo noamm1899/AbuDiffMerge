@@ -46,6 +46,6 @@ def run(py_p, in_p, ex_out_p, py_out_p, debug=False):
                     o_exp_data = f.read().replace(b"\r", b"")
                 cmpres = int(o_data == o_exp_data)
             cmpstr = ["FALSE", "TRUE", "ERROR"][cmpres]
-            run_res.append({"ex_name": namex, "in_name": namei, "res": cmpstr, "time": round(runtime, 7)})
+            run_res.append([namex, namei, cmpstr, round(runtime, 7)])
 
     return run_res
