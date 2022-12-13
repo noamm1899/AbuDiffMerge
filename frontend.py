@@ -14,10 +14,10 @@ def set_error(msg):
 
 def press_run():
     # Get paths
-    py_p = py_path_en.get()
-    in_p = in_path_en.get()
-    ex_out_p = ex_out_path_en.get()
-    py_out_p = py_out_path_en.get()
+    py_p = os.path.relpath(py_path_en.get())
+    in_p = os.path.relpath(in_path_en.get())
+    ex_out_p = os.path.relpath(ex_out_path_en.get())
+    py_out_p = os.path.relpath(py_out_path_en.get())
 
     # Check Input
     if not os.path.isdir(py_p):
