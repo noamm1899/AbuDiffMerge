@@ -11,8 +11,6 @@ def run(py_p, in_p, ex_out_p, py_out_p, debug=False):
     test_globs = [os.path.join(in_p, f"{x}*.txt") for x in exs_names]
     test_files = [glob.glob(x) for x in test_globs]
 
-    # tab = PrettyTable()
-    # tab.field_names = ["Exercise", "Input", "Output Identical?", "Time [s]"]
     run_res = []
 
     for i, p_ex in enumerate(exs):
