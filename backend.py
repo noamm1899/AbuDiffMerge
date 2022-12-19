@@ -29,13 +29,16 @@ def run(py_p, in_p, ex_out_p, py_out_p, debug=False):
                 print("--> running")
             try:
                 start = time.time()
-                subprocess.check_output(f"python \"{p_ex}\" < {pi} > {po}", shell=True)
+                subprocess.check_output(f"python \"{p_ex}\" < {pi} > {po}", shell=True, stderr=subprocess.STDOUT)
                 runtime = time.time() - start
                 if debug:
                     print(f"--> done. {runtime}")
-            except subprocess.CalledProcessError:
+            except subprocess.CalledProcessError as e:
                 if debug:
                     print("--> fail.")
+
+                with open("errors.txt", "a") as f:
+                    f.writelines(e.stdout.decode("utf-8"))
                 cmpres = 2
             else:
                 with open(po, "rb") as f:
