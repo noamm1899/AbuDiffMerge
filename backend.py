@@ -38,7 +38,14 @@ def run(py_p, in_p, ex_out_p, py_out_p, debug=False):
                     print("--> fail.")
 
                 with open("errors.txt", "a") as f:
-                    f.writelines(e.stdout.decode("utf-8"))
+                    f.writelines("subprocess.CalledProcessError: " + e.stdout.decode("utf-8"))
+                cmpres = 2
+            except Exception as e:
+                if debug:
+                    print("--> fail.")
+
+                with open("errors.txt", "a") as f:
+                    f.writelines(repr(e))
                 cmpres = 2
             else:
                 with open(po, "rb") as f:
