@@ -52,6 +52,10 @@ def run(py_p, in_p, ex_out_p, py_out_p, debug=False):
                     o_data = f.read().replace(b"\r", b"")
                 with open(po_exp, "rb") as f:
                     o_exp_data = f.read().replace(b"\r", b"")
+                if len(o_data) and o_data[-1] == "\n":
+                    o_data = o_data[:-1]
+                if len(o_exp_data) and o_exp_data[-1] == "\n":
+                    o_exp_data = o_exp_data[:-1]
                 cmpres = int(o_data == o_exp_data)
             cmpstr = ["FALSE", "TRUE", "ERROR"][cmpres]
             run_res.append([namex, namei, cmpstr, round(runtime, 7)])
